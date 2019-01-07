@@ -1,0 +1,35 @@
+{% extends 'base.template.html' %}
+{% load staticfiles %}
+{% block title %}Login{% endblock %}
+{% block content %}
+<div class="content center">
+    <form id="form" action="{% url 'users:login' %}" method="post">
+        {% csrf_token %}
+        <div class="input-field {% if form.usuario.errors %}invalid{% endif %}">
+            {{ form.usuario }}
+            <label>Usuario</label>
+        </div>
+        
+        <div class="input-field {% if form.usuario.errors %}invalid{% endif %}">
+            {{ form.contrasena }}
+            <label>Contraseña</label>
+        </div>
+        
+        <div class="row">
+            <a href="{% url 'users:register' %}" style="cursor: pointer">Registrarse</a> | 
+            <a href="{% url 'users:forgot' %}" style="cursor: pointer">¿Olvido su contraseña?</a>
+        </div>
+        
+        <div class="row">
+            <p class="center">
+                {{form.remember_me}}
+                <label for="id_remember_me">{{form.remember_me.label}}</label>
+            </p>
+        </div>
+        <div>
+            <button type="submit">Entrar</button>
+        </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

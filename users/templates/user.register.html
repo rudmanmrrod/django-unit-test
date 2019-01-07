@@ -1,0 +1,88 @@
+{% extends 'base.template.html' %}
+{% load staticfiles %}
+{% block title %}Registrarse{% endblock %}
+{% block content %}
+  <div class="center">
+    <h1>Registro</h1><hr>
+    <form action="{% url 'users:register' %}" method="post">
+    {% csrf_token %}
+      <div class="col m12 s12">
+        <div class="input-field {% if form.username.errors %}invalid{% endif %}">
+          <div class="col m4 s4">
+            {{ form.username }}
+            <label for="{{ form.username.auto_id }}">
+              {{ form.username.label }}
+            </label>
+          </div>
+          
+        </div>
+      </div><br><br><br>
+      
+       <div class="col m12 s12">
+        <div class="input-field {% if form.password1.errors %}invalid{% endif %}">
+          <div class="col m4 s4">
+            {{ form.password1 }}
+            <label for="{{ form.password1.auto_id }}">
+              {{ form.password1.label }}
+            </label>
+          </div>
+          
+        </div>
+      </div><br><br><br>
+      
+      <div class="col m12 s12">
+        <div class="input-field {% if form.password2.errors %}invalid{% endif %}">
+          <div class="col m4 s4">
+            {{ form.password2 }}
+            <label for="{{ form.password2.auto_id }}">
+              {{ form.password2.label }}
+            </label>
+          </div>
+          
+        </div>
+      </div><br><br><br>
+          
+      <div class="col m12 s12">
+        <div class="input-field {% if form.first_name.errors %}invalid{% endif %}">
+          <div class="col m4 s4">
+            {{ form.first_name }}
+            <label for="{{ form.first_name.auto_id }}">
+              {{ form.first_name.label }}
+            </label>
+          </div>
+          
+        </div>
+      </div><br><br><br>
+      
+      <div class="col m12 s12">
+        <div class="input-field {% if form.last_name.errors %}invalid{% endif %}">
+          <div class="col m4 s4">
+            {{ form.last_name }}
+            <label for="{{ form.last_name.auto_id }}">
+              {{ form.last_name.label }}
+            </label>
+          </div>
+          
+        </div>
+      </div><br><br><br>
+          
+      <div class="col m12 s12">
+        <div class="input-field {% if form.email.errors %}invalid{% endif %}">
+          <div class="col m4 s4">
+            {{ form.email }}
+            <label for="{{ form.email.auto_id }}">
+              {{ form.email.label }}
+            </label>
+          </div>
+          
+        </div>
+      </div><br><br><br>
+
+      <div class="col m12 s12">
+         <a type="button" href="{% url 'users:register' %}">Regresar</a>
+         <button type="submit">Registrar</button>
+      </div>
+    </form>
+  </div>
+  <br />
+{% endblock %}

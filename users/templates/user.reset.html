@@ -1,0 +1,23 @@
+{% extends 'base.template.html' %}
+{% load staticfiles %}
+{% block title %}Recuperar Contraseña{% endblock %}
+{% block content %}
+    <div class="center">
+        <h1>Recuperar Contraseña</h1><hr>
+        <form method="post">
+            {% csrf_token %}
+            <div class="col m12 s12">
+                <div class="input-field {% if form.email.errors %}invalid{% endif %}">
+                    {{ form.email }}
+                    <label for="{{ form.email.auto_id }}">
+                        {{ form.email.label }}
+                    </label>
+                </div>
+            </div><br><br><br>
+            <div class="col m12 s12">
+                <button type="submit">Enviar</button>
+            </div>
+        </form>
+    </div>
+
+{% endblock %}
