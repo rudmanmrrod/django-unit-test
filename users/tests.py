@@ -96,8 +96,9 @@ class LoginTest(TestCase):
     en este caso registrar un usuario
     """
     request = self.factory.post("/login", 
-      {'usuario': "test", "contrasena": "prueba123",}) 
+      {'usuario': "test", "contrasena": "prueba1234",}) 
     setup_request(request)
+    print(response.content)
     response = LoginView.as_view()(request)
     self.assertEqual(response.status_code, 200)
 
