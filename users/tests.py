@@ -1,8 +1,10 @@
+from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.test import RequestFactory, TestCase
-from .views import *
+from .models import *
 from .forms import *
 from .functions import setup_request
+from .views import *
 
 class RegisterUserTest(TestCase):
   """!
@@ -67,7 +69,15 @@ class RegisterUserTest(TestCase):
     self.assertFalse(form.is_valid())
 
 class LoginTest(TestCase):
+  """!
+    Clase para probar el login
+  """
+
   def setUp(self):
+    """!
+    Método para configurar los valores iniciales de
+    la prueba unitaria
+    """
     self.factory = RequestFactory()
     self.user = User.objects.create_user(
       username='testuser', email='test@mail.com', password='prueba123')
@@ -90,3 +100,58 @@ class LoginTest(TestCase):
     setup_request(request)
     response = LoginView.as_view()(request)
     self.assertEqual(response.status_code, 200)
+
+class ChangePasswordTest(TestCase):
+  """!
+    Clase para probar el cambio de contraseña
+  """
+
+  def setUp(self):
+    """!
+    Método para configurar los valores iniciales de
+    la prueba unitaria
+    """
+    self.factory = RequestFactory()
+    self.username = 'testuser'
+    self.old_password = 'prueba123'
+    self.new_password = '123prueba'
+    self.user = User.objects.create_user(
+      username=self.username, email='test@mail.com', password=self.old_password)
+
+  def test_change_password(self):
+    """!
+    Método para probar el cambio de contraseña
+    """
+    request = self.factory.post("/account/change-pass/", 
+      {'old_password': self.old_password, 'new_password1': self.new_password, 
+      'new_password2': self.new_password})
+    request.user = self.user
+    response = ChangePasswordView.as_view()(request)
+    self.assertEqual(response.status_code, 302)
+    self.assertIsNotNone(authenticate(username='testuser', password=self.new_password))
+
+class ProfileTest(TestCase):
+  """!
+    Clase para probar el perfil
+  """
+
+  def setUp(self):
+    """!
+    Método para configurar los valores iniciales de
+    la prueba unitaria
+    """
+    self.factory = RequestFactory()
+    self.user = User.objects.create_user(
+      username='testuser', email='test@mail.com', password='prueba123')
+
+  def test_model(self):
+    """!
+    Método para probar el modelo del perfil
+    """
+    profile = Profile()
+    profile.address='dirección de prueba'
+    profile.phone='+1 12345687'
+    profile.gender='M'
+    profile.user=self.user
+    profile.save()
+    self.assertEqual(profile.pk,1)

@@ -15,3 +15,11 @@ Repositorio con ejemplos de pruebas unitarias en django
 
 * Prueba de la vista en petición por GET
 * Prueba de la vista en petición por POST
+
+## (Cambio de Contraseña)
+
+* Probado cambio de contraseña (petición POST)
+
+## (Profile)
+
+* Probado almacenar correctamente en modelos
