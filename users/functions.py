@@ -1,4 +1,6 @@
 from django.contrib.auth.models import User
+from django.contrib.messages.middleware import MessageMiddleware
+from django.contrib.sessions.middleware import SessionMiddleware
 
     
 def validate_email(email):
@@ -30,3 +32,18 @@ def validate_username(username):
         return True
     else:
         return False
+
+def setup_request( request):
+    """!
+    Función para configurar la petición
+
+    @param request Recibe la petición para configurar
+    """
+    # Session Middleware
+    middleware = SessionMiddleware()
+    middleware.process_request(request)
+    request.session.save()
+    # Message Middleware
+    middleware = MessageMiddleware()
+    middleware.process_request(request)
+    request.session.save()

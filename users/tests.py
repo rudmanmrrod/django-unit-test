@@ -1,35 +1,20 @@
 from django.contrib.auth.models import User
 from django.test import RequestFactory, TestCase
-from django.contrib.messages.middleware import MessageMiddleware
-from django.contrib.sessions.middleware import SessionMiddleware
 from .views import *
 from .forms import *
+from .functions import setup_request
 
-"""!
-  Clase para probar el registro de usuarios
-"""
-class RegisterUser(TestCase):
+class RegisterUserTest(TestCase):
+  """!
+    Clase para probar el registro de usuarios
+  """
+
   def setUp(self):
     """!
     Método para configurar los valores iniciales de
     la prueba unitaria
     """
     self.factory = RequestFactory()
-
-  def setup_request(self, request):
-    """!
-    Método para configurar la petición
-
-    @param request Recibe la petición para configurar
-    """
-    # Session Middleware
-    middleware = SessionMiddleware()
-    middleware.process_request(request)
-    request.session.save()
-    # Message Middleware
-    middleware = MessageMiddleware()
-    middleware.process_request(request)
-    request.session.save()
 
   def test_get(self):
     """!
@@ -48,7 +33,7 @@ class RegisterUser(TestCase):
     request = self.factory.post("/register", 
       {'email': "test@mail.com", 'username': "test", 'first_name': "test",
       "last_name":"user","password1": "prueba123", "password2": "prueba123"}) 
-    self.setup_request(request)
+    setup_request(request)
     response = RegisterView.as_view()(request)
     self.assertEqual(response.status_code, 302)
     self.assertEqual(User.objects.count(), user+1)
@@ -80,3 +65,28 @@ class RegisterUser(TestCase):
       'last_name': "user"
     })
     self.assertFalse(form.is_valid())
+
+class LoginTest(TestCase):
+  def setUp(self):
+    self.factory = RequestFactory()
+    self.user = User.objects.create_user(
+      username='testuser', email='test@mail.com', password='prueba123')
+
+  def test_get(self):
+    """!
+    Método para probar las peticiones por get
+    """
+    request = self.factory.get('/login')
+    response = LoginView.as_view()(request)
+    self.assertEqual(response.status_code, 200)
+
+  def test_post(self):
+    """!
+    Método para probar la vista por post,
+    en este caso registrar un usuario
+    """
+    request = self.factory.post("/login", 
+      {'usuario': "test", "contrasena": "prueba123",}) 
+    setup_request(request)
+    response = LoginView.as_view()(request)
+    self.assertEqual(response.status_code, 200)
