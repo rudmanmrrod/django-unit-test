@@ -25,3 +25,8 @@ Repositorio con ejemplos de pruebas unitarias en django
 * Probado almacenar correctamente en modelos
 * Probada vista con lista de perfiles
 * Probada la vista con cración de perfiles
+
+## (Profile vía Rest)
+
+* Probar el listado vía servicios rest
+* Probar el creado vía servicios rest 

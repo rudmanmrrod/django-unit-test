@@ -1,6 +1,7 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.test import RequestFactory, TestCase
+from rest_framework.test import APIClient
 from .models import *
 from .forms import *
 from .functions import setup_request
@@ -179,3 +180,41 @@ class ProfileTest(TestCase):
     response = CreateProfileView.as_view()(request)
     self.assertEqual(response.status_code, 302)
     self.assertEqual(Profile.objects.count(), profile+1)
+
+class ProfileRestTest(TestCase):
+  """!
+    Clase para probar el perfil por servicios rest
+  """
+
+  def setUp(self):
+    """!
+    Método para configurar los valores iniciales de
+    la prueba unitaria
+    """
+    self.client = APIClient()
+    self.user = User.objects.create_user(
+      username='testuser', email='test@mail.com', password='prueba123')
+    self.profile = Profile.objects.create(
+      address = "dirección de prueba",
+      phone = "+58 123456",
+      gender = "M",
+      user = self.user
+    )
+
+  def test_list(self):
+    """!
+    Método para probar el listado de perfiles
+    """
+    response = self.client.get('/api/profile/')
+    self.assertEqual(response.status_code,200)
+
+  def test_create(self):
+    """!
+    Método para probar el creado de un perfil
+    """
+    profile = Profile.objects.count()
+    response = self.client.post('/api/profile/',
+      {'address':'otra dirección','phone':'+1 234454',
+      'gender':'M','user_id':1},format="json")
+    self.assertEqual(response.status_code,201)
+    self.assertEqual(Profile.objects.count(),profile + 1)

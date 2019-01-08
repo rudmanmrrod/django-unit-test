@@ -117,18 +117,27 @@ class ChangePasswordView(LoginRequiredMixin,FormView):
         return super().form_valid(form)
 
 class ListProfileView(LoginRequiredMixin,ListView):
+    """!
+    Clase para listar los perfiles de usuario
+    """
     template_name = "profile/profile.list.html"
     model = Profile
     paginate_by = 5
 
 class CreateProfileView(LoginRequiredMixin,CreateView):
+    """!
+    Clase para registrar los perfiles de usuario
+    """
     template_name = "profile/profile.create.html"
     model = Profile
     form_class = ProfileForm
     success_url = reverse_lazy('users:profile_list')
 
     def form_valid(self,form):
-        print(self.request.user)
+        """!
+        Método que ingresa si el formulario es válido
+        @param form Recibe el formulario
+        """
         self.object = form.save(commit=False)
         self.object.address = form.cleaned_data['address']
         self.object.phone = form.cleaned_data['phone']
