@@ -23,3 +23,5 @@ Repositorio con ejemplos de pruebas unitarias en django
 ## (Profile)
 
 * Probado almacenar correctamente en modelos
+* Probada vista con lista de perfiles
+* Probada la vista con cración de perfiles

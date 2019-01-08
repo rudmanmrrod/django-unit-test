@@ -98,7 +98,6 @@ class LoginTest(TestCase):
     request = self.factory.post("/login", 
       {'usuario': "test", "contrasena": "prueba1234",}) 
     setup_request(request)
-    print(response.content)
     response = LoginView.as_view()(request)
     self.assertEqual(response.status_code, 200)
 
@@ -156,3 +155,27 @@ class ProfileTest(TestCase):
     profile.user=self.user
     profile.save()
     self.assertEqual(profile.pk,1)
+
+  def test_list_view(self):
+    """!
+    Método para probar el listado de perfiles
+    """
+    request = self.factory.get("/profile") 
+    request.user = self.user
+    #setup_request(request)
+    response = ListProfileView.as_view()(request)
+    self.assertEqual(response.status_code, 200)
+
+  def test_create_view(self):
+    """!
+    Método para probar la creación de perfiles
+    """
+    profile = Profile.objects.count()
+    request = self.factory.post("/profile/create", 
+      {'address': "dirección de prueba",
+       "phone": "+58 123456",
+       "gender":"F"}) 
+    request.user = self.user
+    response = CreateProfileView.as_view()(request)
+    self.assertEqual(response.status_code, 302)
+    self.assertEqual(Profile.objects.count(), profile+1)

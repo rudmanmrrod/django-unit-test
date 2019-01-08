@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views.generic import (
     FormView, RedirectView, CreateView, 
-    UpdateView, ListView, TemplateView
+    UpdateView, ListView, TemplateView, DeleteView
     )
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
@@ -12,10 +12,8 @@ from django.urls import reverse_lazy
 from django.contrib.auth.models import User, Group
 from django.contrib.auth import login
 from django.http import HttpResponseForbidden, JsonResponse
-from .forms import (
-    LoginForm, UserRegisterForm, 
-    PasswordChangeForm, PasswordConfirmForm, PasswordChangeAccount
-    )
+from .forms import *
+from .models import *
 
 
 
@@ -118,3 +116,23 @@ class ChangePasswordView(LoginRequiredMixin,FormView):
             return super().form_valid(form)    
         return super().form_valid(form)
 
+class ListProfileView(LoginRequiredMixin,ListView):
+    template_name = "profile/profile.list.html"
+    model = Profile
+    paginate_by = 5
+
+class CreateProfileView(LoginRequiredMixin,CreateView):
+    template_name = "profile/profile.create.html"
+    model = Profile
+    form_class = ProfileForm
+    success_url = reverse_lazy('users:profile_list')
+
+    def form_valid(self,form):
+        print(self.request.user)
+        self.object = form.save(commit=False)
+        self.object.address = form.cleaned_data['address']
+        self.object.phone = form.cleaned_data['phone']
+        self.object.gender = form.cleaned_data['gender']
+        self.object.user = self.request.user
+        self.object.save()
+        return super().form_valid(form)

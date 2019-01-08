@@ -27,4 +27,6 @@ urlpatterns = [
     							   template_name='user.passwordreset.done.html'),
         name='reset_done'),
     path('account/change-pass/', ChangePasswordView.as_view(), name="change_pass"),
+    path('profile',ListProfileView.as_view(),name="profile_list"),
+    path('profile/create',CreateProfileView.as_view(),name="profile_create"),
 ]

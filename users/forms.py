@@ -16,7 +16,7 @@ from django.contrib.auth.forms import PasswordResetForm, SetPasswordForm, Passwo
 from .functions import (
     validate_email, validate_username
     )
-#from captcha.fields import CaptchaField
+from .models import *
 
 from django.core.validators import RegexValidator
 
@@ -206,4 +206,20 @@ class PasswordChangeAccount(PasswordChangeForm):
         super(PasswordChangeAccount, self).__init__(*args, **kwargs)
         self.fields['old_password'].widget.attrs.update({'placeholder': 'Antigua contraseña'})
         self.fields['new_password1'].widget.attrs.update({'placeholder': 'Contraseña Nueva'})
-        self.fields['new_password2'].widget.attrs.update({'placeholder': 'Repita su Contraseña'})     
+        self.fields['new_password2'].widget.attrs.update({'placeholder': 'Repita su Contraseña'}) 
+
+class ProfileForm(forms.ModelForm):
+    
+    ##  Dirección
+    address = forms.CharField(widget=forms.Textarea())
+
+    ##  Dirección
+    phone = forms.CharField()
+
+    ##  Dirección
+    gender = forms.ChoiceField(widget=forms.Select(),
+        choices=(('F','Femenino'),('M','Masculino')))  
+    
+    class Meta:
+        model = Profile
+        exclude = ['user']    

@@ -1,0 +1,27 @@
+{% extends 'base.template.html' %}
+{% load staticfiles %}
+{% block title %}Registrar Perfil{% endblock %}
+{% block content %}
+  <form id="form" action="{% url 'users:profile_create' %}" method="post">
+      {% csrf_token %}
+      <div class="input-field">
+        {{ form.address }}
+        <label>Dirección</label>
+      </div>
+      
+      <div class="input-field">
+        {{ form.phone }}
+        <label>Teléfono</label>
+      </div>
+
+      <div class="input-field">
+        {{ form.gender }}
+        <label>Género</label>
+      </div>
+      
+      <div>
+          <button type="submit">Entrar</button>
+      </div>
+      </div>
+  </form>
+{% endblock %}
