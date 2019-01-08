@@ -205,8 +205,9 @@ class ProfileRestTest(TestCase):
     """!
     Método para probar el listado de perfiles
     """
-    response = self.client.get('/api/profile/')
+    response = self.client.get('/api/profile/',format="json")
     self.assertEqual(response.status_code,200)
+    self.assertEqual(len(response.data),1)
 
   def test_create(self):
     """!
