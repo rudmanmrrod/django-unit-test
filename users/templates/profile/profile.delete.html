@@ -1,0 +1,12 @@
+{% extends 'base.base.html' %}
+{% load staticfiles %}
+{% block title %}Eliminar Perfil{% endblock %}
+{% block contenido %}
+    <h1>Borrar consulta <b>{{object.user.username}}</b></h1><hr>
+    <form method="post">
+        {% csrf_token %}
+        <p>Si en realidad deseas borrar este registro da click en:</p>
+        <button type="submit">Borrar </button>
+    </form><br>
+    <a type="button" href="{% url 'users:profile_list' %}"> Regresar </a>
+{% endblock %}

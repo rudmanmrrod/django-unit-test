@@ -1,0 +1,27 @@
+{% extends 'base.template.html' %}
+{% load staticfiles %}
+{% block title %}Actualizar Perfil{% endblock %}
+{% block content %}
+  <form id="form" action="" method="post">
+      {% csrf_token %}
+      <div class="input-field">
+        <label>Dirección</label>
+        {{ form.address }}
+      </div>
+      
+      <div class="input-field">
+        <label>Teléfono</label>
+        {{ form.phone }}
+      </div>
+
+      <div class="input-field">
+        <label>Género</label>
+        {{ form.gender }}
+      </div>
+      
+      <div>
+          <button type="submit">Actualizar</button>
+      </div>
+      </div>
+  </form>
+{% endblock %}

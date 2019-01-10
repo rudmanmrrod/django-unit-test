@@ -29,4 +29,6 @@ urlpatterns = [
     path('account/change-pass/', ChangePasswordView.as_view(), name="change_pass"),
     path('profile',ListProfileView.as_view(),name="profile_list"),
     path('profile/create',CreateProfileView.as_view(),name="profile_create"),
+    path('profile/update/<int:pk>', UpdateProfileView.as_view(), name = "profile_update"),
+    path('profile/delete/<int:pk>', DeleteProfileView.as_view(), name = "profile_delete"),
 ]

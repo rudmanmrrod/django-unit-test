@@ -145,3 +145,20 @@ class CreateProfileView(LoginRequiredMixin,CreateView):
         self.object.user = self.request.user
         self.object.save()
         return super().form_valid(form)
+
+class UpdateProfileView(LoginRequiredMixin,UpdateView):
+    """!
+    Clase para actualizar los perfiles de usuario
+    """
+    template_name = "profile/profile.update.html"
+    model = Profile
+    form_class = ProfileForm
+    success_url = reverse_lazy('users:profile_list')
+
+class DeleteProfileView(LoginRequiredMixin,DeleteView):
+    """!
+    Clase para eliminar los perfiles de usuario
+    """
+    template_name = "profile/profile.delete.html"
+    model = Profile
+    success_url = reverse_lazy('users:profile_list')

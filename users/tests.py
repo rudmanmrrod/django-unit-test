@@ -144,6 +144,11 @@ class ProfileTest(TestCase):
     self.factory = RequestFactory()
     self.user = User.objects.create_user(
       username='testuser', email='test@mail.com', password='prueba123')
+    self.profile = Profile.objects.create( 
+      address='dirección de prueba',
+      phone='+1 12345687',
+      gender='M',
+      user=self.user)
 
   def test_model(self):
     """!
@@ -155,7 +160,7 @@ class ProfileTest(TestCase):
     profile.gender='M'
     profile.user=self.user
     profile.save()
-    self.assertEqual(profile.pk,1)
+    self.assertEqual(profile.pk,2)
 
   def test_list_view(self):
     """!
@@ -180,6 +185,31 @@ class ProfileTest(TestCase):
     response = CreateProfileView.as_view()(request)
     self.assertEqual(response.status_code, 302)
     self.assertEqual(Profile.objects.count(), profile+1)
+
+  def test_update_view(self):
+    """!
+    Método para probar la actualización de perfiles
+    """
+    request = self.factory.post("/profile/update/1", 
+      {'address': "dirección actualizada",
+       "phone": "+58 123456",
+       "gender":"F"})
+    request.user = self.user
+    response = UpdateProfileView.as_view()(request,pk=self.profile.pk)
+    profile = Profile.objects.first()
+    self.assertEqual(response.status_code, 302)
+    self.assertEqual(profile.address,"dirección actualizada")
+
+  def test_delete_view(self):
+    """!
+    Método para probar la eliminación de perfiles
+    """
+    profile = Profile.objects.count()
+    request = self.factory.post("/profile/delete/1")
+    request.user = self.user
+    response = DeleteProfileView.as_view()(request,pk=self.profile.pk)
+    self.assertEqual(response.status_code, 302)
+    self.assertEqual(Profile.objects.count(),profile-1)
 
 class ProfileRestTest(TestCase):
   """!
