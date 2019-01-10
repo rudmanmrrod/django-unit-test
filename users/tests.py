@@ -202,7 +202,7 @@ class ProfileTest(TestCase):
 
   def test_delete_view(self):
     """!
-    Método para probar la eliminación de perfiles
+    Método para probar el eliminado de perfiles
     """
     profile = Profile.objects.count()
     request = self.factory.post("/profile/delete/1")
@@ -249,3 +249,23 @@ class ProfileRestTest(TestCase):
       'gender':'M','user_id':1},format="json")
     self.assertEqual(response.status_code,201)
     self.assertEqual(Profile.objects.count(),profile + 1)
+
+  def test_update(self):
+    """!
+    Método para probar la actualización de un perfil
+    """
+    response = self.client.put('/api/profile/1/',
+      {'address':'dirección actualizada','phone':'+1 234454',
+      'gender':'M','user_id':1},format="json")
+    self.assertEqual(response.status_code,200)
+    profile = Profile.objects.first()
+    self.assertEqual(profile.address,"dirección actualizada")
+
+  def test_delete(self):
+    """!
+    Método para probar el eliminado de un perfil
+    """
+    profile = Profile.objects.count()
+    response = self.client.delete('/api/profile/1/')
+    self.assertEqual(response.status_code,204)
+    self.assertEqual(Profile.objects.count(),profile - 1)

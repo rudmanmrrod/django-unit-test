@@ -32,3 +32,5 @@ Repositorio con ejemplos de pruebas unitarias en django
 
 * Probar el listado vía servicios rest
 * Probar el creado vía servicios rest 
+* Probar el actualizado vía servicios rest 
+* Probar el eliminado vía servicios rest 
